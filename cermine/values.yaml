@@ -1,0 +1,55 @@
+# Default values for cermine-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: elifesciences/cermine
+  tag: 1.13
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+livenessProbe:
+  failureThreshold: 120  # just under 60s startup time seems to be normal
+
+readinessProbe:
+  failureThreshold: 120  # just under 60s startup time seems to be normal
+
+service:
+  type: ClusterIP
+  port: 8072
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - #host: chart-example.local
+      paths: []
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 1
+    memory: 4Gi
+  requests:
+    cpu: 1
+    memory: 4Gi
+
+autoscaling:
+  maxReplicas: 16
+  targetAverageCpuUtilization: 80 # default of HPA
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

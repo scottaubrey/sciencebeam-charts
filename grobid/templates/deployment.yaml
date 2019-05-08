@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "grobid-chart.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "grobid-chart.name" . }}
+    helm.sh/chart: {{ include "grobid-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "grobid-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "grobid-chart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if not .Values.crossref.enabled }}
+      hostAliases:
+      - ip: "127.0.0.1"
+        hostnames:
+        - "api.crossref.org"
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: JAVA_OPTS
+            value: "{{ .Values.maxJavaHeap }}"
+          ports:
+            - name: http
+              containerPort: 8070
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            #timeoutSeconds: 5
+            #failureThreshold: 3 # default
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.warmup.enabled }}
+        - name: warmup
+          image: pstauffer/curl
+          command: ['/bin/sh']
+          args: ['-c', 'curl https://upload.wikimedia.org/wikipedia/commons/5/5b/I-20_Sample.pdf -o sample.pdf && sleep 168h']
+          readinessProbe:
+            exec:
+              command:
+                  - '/bin/sh'
+                  - '-c'
+                  - 'curl -v --form input=@sample.pdf --form consolidateHeader=0 --form consolidateCitations=0 -o /dev/null http://localhost:8070/api/processFulltextDocument'
+            periodSeconds: 60
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

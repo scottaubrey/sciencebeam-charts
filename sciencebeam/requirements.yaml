@@ -1,0 +1,17 @@
+dependencies:
+- name: cermine
+  version: "0.1.0"
+  repository: "file://../cermine"
+  condition: cermine.enabled,global.cermine.enabled
+- name: grobid
+  version: "0.1.0"
+  repository: "file://../grobid"
+  condition: grobid.enabled,global.grobid.enabled
+- name: scienceparse-v1
+  version: "0.1.0"
+  repository: "file://../scienceparse-v1"
+  condition: scienceparse_v1.enabled,global.scienceparse_v1.enabled
+- name: scienceparse-v2
+  version: "0.1.0"
+  repository: "file://../scienceparse-v2"
+  condition: scienceparse_v2.enabled,global.scienceparse_v2.enabled

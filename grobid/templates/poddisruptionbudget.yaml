@@ -1,0 +1,15 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "grobid-chart.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "grobid-chart.name" . }}
+    helm.sh/chart: {{ include "grobid-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "grobid-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  minAvailable: "50%"

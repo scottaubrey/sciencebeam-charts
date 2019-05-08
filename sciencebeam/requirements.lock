@@ -1,0 +1,15 @@
+dependencies:
+- name: cermine
+  repository: file://../cermine
+  version: 0.1.0
+- name: grobid
+  repository: file://../grobid
+  version: 0.1.0
+- name: scienceparse-v1
+  repository: file://../scienceparse-v1
+  version: 0.1.0
+- name: scienceparse-v2
+  repository: file://../scienceparse-v2
+  version: 0.1.0
+digest: sha256:f4e1cd1cac9152ffcd7e9fd1500fee4a3515a0f5e089bcb42ba632450d9f729b
+generated: 2019-03-29T12:22:49.644902805Z

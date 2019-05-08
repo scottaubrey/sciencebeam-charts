@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "grobid-chart.fullname" . }}-test-connection"
+  labels:
+    app.kubernetes.io/name: {{ include "grobid-chart.name" . }}
+    helm.sh/chart: {{ include "grobid-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "grobid-chart.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

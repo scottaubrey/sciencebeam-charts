@@ -1,0 +1,55 @@
+# Default values for scienceparse-v2-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: allenai/spv2
+  tag: "2.10"
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+livenessProbe:
+  failureThreshold: 600  # just under 3m startup time seems to be normal
+
+readinessProbe:
+  failureThreshold: 600  # just under 3m startup time seems to be normal
+
+service:
+  type: ClusterIP
+  port: 8073
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - #host: chart-example.local
+      paths: []
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 1
+    memory: 4Gi
+  requests:
+    cpu: 1
+    memory: 4Gi
+
+autoscaling:
+  maxReplicas: 16
+  targetAverageCpuUtilization: 80 # default of HPA
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
