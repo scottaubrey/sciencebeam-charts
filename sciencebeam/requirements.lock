@@ -14,5 +14,5 @@ dependencies:
 - name: scienceparse-v2
   repository: file://../scienceparse-v2
   version: 0.1.0
-digest: sha256:afa34fc7e9dcf0610235423376a67982ddbc4af1bb4938e4175d95ee87e6c3ae
-generated: "2019-06-10T14:52:20.724744642+01:00"
+digest: sha256:54045085fa8280af4fefb7a5e8fa13b2c927c343dd36acd27e610c4b26675a83
+generated: "2019-06-10T18:40:58.483946497+01:00"

@@ -2,7 +2,7 @@ dependencies:
 - name: sciencebeam-autocut
   version: "0.1.0"
   repository: "file://../sciencebeam-autocut"
-  condition: sciencebeam-autocut.enabled,global.autocut.enabled
+  condition: sciencebeam_autocut.enabled,global.sciencebeam_autocut.enabled
 - name: cermine
   version: "0.1.0"
   repository: "file://../cermine"
