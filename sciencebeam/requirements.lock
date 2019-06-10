@@ -1,4 +1,7 @@
 dependencies:
+- name: sciencebeam-autocut
+  repository: file://../sciencebeam-autocut
+  version: 0.1.0
 - name: cermine
   repository: file://../cermine
   version: 0.1.0
@@ -11,5 +14,5 @@ dependencies:
 - name: scienceparse-v2
   repository: file://../scienceparse-v2
   version: 0.1.0
-digest: sha256:f4e1cd1cac9152ffcd7e9fd1500fee4a3515a0f5e089bcb42ba632450d9f729b
-generated: 2019-03-29T12:22:49.644902805Z
+digest: sha256:afa34fc7e9dcf0610235423376a67982ddbc4af1bb4938e4175d95ee87e6c3ae
+generated: "2019-06-10T14:52:20.724744642+01:00"

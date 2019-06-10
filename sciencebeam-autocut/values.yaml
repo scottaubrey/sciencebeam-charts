@@ -1,40 +1,31 @@
-# Default values for sciencebeam-chart.
+# Default values for sciencebeam-autocut-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: elifesciences/sciencebeam_unstable
-  tag: b1670060bfea2a1c0bdeb0cb88b2fd65f307d1af
+  repository: elifesciences/sciencebeam-gym_unstable
+  tag: db96e9e683e4e447b71bcd6e8a273d5ae2c4e752
   pullPolicy: IfNotPresent
 
-sciencebeam:
-  pipeline: grobid
-  args: ''
-
-sciencebeam_autocut:
-  enabled: false
-  xpath: "front/article-meta/title-group/article-title"
-
-cermine:
-  enabled: false
-
-grobid:
-  enabled: true
-
-scienceparse_v1:
-  enabled: false
-
-scienceparse_v2:
-  enabled: false
+autocut:
+  modelPath: ""
+  workers: 1
+  testPath: /api/autocut?value=test
 
 nameOverride: ""
 fullnameOverride: ""
 
+livenessProbe:
+  failureThreshold: 120  # just under 60s startup time seems to be normal
+
+readinessProbe:
+  failureThreshold: 120  # just under 60s startup time seems to be normal
+
 service:
   type: ClusterIP
-  port: 8075
+  port: 8079
 
 ingress:
   enabled: false
@@ -55,10 +46,11 @@ resources:
     cpu: 1
     memory: 1Gi
   requests:
-    cpu: 100m
+    cpu: 1
     memory: 1Gi
 
 autoscaling:
+  enabled: false
   maxReplicas: 16
   targetAverageCpuUtilization: 80 # default of HPA
 

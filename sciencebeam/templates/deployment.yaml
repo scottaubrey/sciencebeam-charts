@@ -27,6 +27,10 @@ spec:
           args: ['-c', './server.sh \
             --host=0.0.0.0 --port=8075 \
             --pipeline={{ .Values.sciencebeam.pipeline }} \
+            {{- if .Values.sciencebeam_autocut.enabled -}}
+              --sciencebeam-autocut-url http://{{ template "sciencebeam-autocut.fullname" . }}:8079/api/autocut \
+              --sciencebeam-autocut-xpath "{{ .Values.sciencebeam_autocut.xpath }}" \
+            {{- end }}
             {{- if .Values.cermine.enabled -}}
               --cermine-url http://{{ template "cermine.fullname" . }}:8072/extract.do \
             {{- end }}
