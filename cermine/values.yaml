@@ -45,6 +45,7 @@ resources:
     memory: 4Gi
 
 autoscaling:
+  enabled: false
   maxReplicas: 16
   targetAverageCpuUtilization: 80 # default of HPA
 
