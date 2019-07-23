@@ -32,6 +32,10 @@ spec:
           env:
           - name: JAVA_OPTS
             value: "{{ .Values.maxJavaHeap }}"
+        {{- range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: "{{ $value }}"
+        {{- end }}
           ports:
             - name: http
               containerPort: 8070
