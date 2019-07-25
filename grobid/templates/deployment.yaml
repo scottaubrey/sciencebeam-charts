@@ -44,12 +44,12 @@ spec:
             httpGet:
               path: /
               port: http
-            #timeoutSeconds: 5
-            #failureThreshold: 3 # default
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           readinessProbe:
             httpGet:
               path: /
               port: http
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.warmup.enabled }}

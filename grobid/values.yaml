@@ -17,6 +17,12 @@ maxJavaHeap: "-Xmx1g"
 crossref:
   enabled: true
 
+readinessProbe:
+  failureThreshold: 600  # with preloading, it might take longer to start the server
+
+livenessProbe:
+  failureThreshold: 60
+
 service:
   type: ClusterIP
   port: 8070
