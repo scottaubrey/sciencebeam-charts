@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: elifesciences/sciencebeam_unstable
-  tag: b1670060bfea2a1c0bdeb0cb88b2fd65f307d1af
+  repository: elifesciences/sciencebeam
+  tag: 0.0.3
   pullPolicy: IfNotPresent
 
 sciencebeam:
