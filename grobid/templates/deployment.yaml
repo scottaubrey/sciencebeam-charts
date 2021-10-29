@@ -54,16 +54,17 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if .Values.warmup.enabled }}
         - name: warmup
-          image: pstauffer/curl
+          image: "{{ .Values.warmup.image.repository }}:{{ .Values.warmup.image.tag }}"
+          imagePullPolicy: {{ .Values.warmup.image.pullPolicy }}
           command: ['/bin/sh']
-          args: ['-c', 'curl https://upload.wikimedia.org/wikipedia/commons/5/5b/I-20_Sample.pdf -o sample.pdf && sleep 168h']
+          args: ['-c', 'curl "{{ .Values.warmup.documentUrl }}" -o sample.pdf && sleep 168h']
           readinessProbe:
             exec:
               command:
                   - '/bin/sh'
                   - '-c'
                   - 'curl -v --form input=@sample.pdf --form consolidateHeader=0 --form consolidateCitations=0 -o /dev/null http://localhost:8070/api/processFulltextDocument'
-            periodSeconds: 60
+            periodSeconds: {{ .Values.warmup.periodSeconds }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
