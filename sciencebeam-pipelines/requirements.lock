@@ -1,0 +1,18 @@
+dependencies:
+- name: sciencebeam-autocut
+  repository: file://../sciencebeam-autocut
+  version: 0.1.0
+- name: cermine
+  repository: file://../cermine
+  version: 0.1.0
+- name: grobid
+  repository: file://../grobid
+  version: 0.1.0
+- name: scienceparse-v1
+  repository: file://../scienceparse-v1
+  version: 0.1.0
+- name: scienceparse-v2
+  repository: file://../scienceparse-v2
+  version: 0.1.0
+digest: sha256:54045085fa8280af4fefb7a5e8fa13b2c927c343dd36acd27e610c4b26675a83
+generated: "2019-06-10T18:40:58.483946497+01:00"

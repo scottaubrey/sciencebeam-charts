@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sciencebeam-pipelines-chart.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sciencebeam-pipelines-chart.name" . }}
+    helm.sh/chart: {{ include "sciencebeam-pipelines-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "sciencebeam-pipelines-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "sciencebeam-pipelines-chart.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['/bin/sh']
+          args: ['-c', './server.sh \
+            --host=0.0.0.0 --port=8075 \
+            --pipeline={{ .Values.sciencebeam_pipelines.pipeline }} \
+            {{- if .Values.sciencebeam_autocut.enabled -}}
+              --sciencebeam-autocut-url http://{{ template "sciencebeam-autocut.fullname" . }}:8079/api/autocut \
+              --sciencebeam-autocut-xpath "{{ .Values.sciencebeam_autocut.xpath }}" \
+            {{- end }}
+            {{- if .Values.cermine.enabled -}}
+              --cermine-url http://{{ template "cermine.fullname" . }}:8072/extract.do \
+            {{- end }}
+            {{- if .Values.grobid.enabled -}}
+              --grobid-url http://{{ template "grobid.fullname" . }}:8070/api \
+            {{- end }}
+            {{- if .Values.scienceparse_v1.enabled -}}
+              --science-parse-url http://{{ template "scienceparse_v1.fullname" . }}:8071/v1 \
+            {{- end }}
+            {{- if .Values.scienceparse_v2.enabled -}}
+              --science-parse-url http://{{ template "scienceparse_v2.fullname" . }}:8073/v1/json/pdf \
+            {{- end }}
+            {{ .Values.sciencebeam_pipelines.args }}']
+        {{- if .Values.env }}
+          env:
+        {{- range $key, $value := .Values.env }}
+          - name: {{ $key }}
+            value: "{{ $value }}"
+        {{- end }}
+        {{- end }}
+          ports:
+            - name: http
+              containerPort: 8075
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/convert
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/convert
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
