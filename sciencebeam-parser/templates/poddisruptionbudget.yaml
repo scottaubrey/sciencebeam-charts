@@ -1,0 +1,15 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "sciencebeam-parser-chart.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "sciencebeam-parser-chart.name" . }}
+    helm.sh/chart: {{ include "sciencebeam-parser-chart.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "sciencebeam-parser-chart.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  minAvailable: "50%"
