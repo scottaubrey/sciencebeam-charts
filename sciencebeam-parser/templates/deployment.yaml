@@ -39,13 +39,16 @@ spec:
               path: /
               port: http
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
-            initialDelaySeconds: 6000
           readinessProbe:
             httpGet:
               path: /
               port: http
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
-            initialDelaySeconds: 6000
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

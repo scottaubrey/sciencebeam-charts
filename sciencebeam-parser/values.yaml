@@ -18,6 +18,10 @@ readinessProbe:
 livenessProbe:
   failureThreshold: 60
 
+startupProbe:
+  failureThreshold: 600  # with preloading, it might take longer to start the server - liveness will wait for a successful startupProbe
+
+
 service:
   type: ClusterIP
   port: 8070
