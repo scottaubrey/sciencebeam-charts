@@ -63,6 +63,11 @@ spec:
             httpGet:
               path: /api/convert
               port: http
+          startupProbe:
+            httpGet:
+              path: /api/convert
+              port: http
+            failureThreshold: {{ .Values.startupProbe.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

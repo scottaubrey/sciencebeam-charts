@@ -71,3 +71,6 @@ tolerations: []
 affinity: {}
 
 env: {}
+
+startupProbe:
+  failureThreshold: 600  # with preloading, it might take longer to start the server - liveness will wait for a successful startupProbe
